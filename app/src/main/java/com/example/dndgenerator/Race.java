@@ -35,13 +35,13 @@ public class Race extends AppCompatActivity {
         setContentView(R.layout.content_main);
 
         //Get UI elements
-        textViewRace = (TextView)findViewById(R.id.textViewRace);
-        textViewSub = (TextView)findViewById(R.id.textViewSub);
-        textViewSpeed = (TextView)findViewById(R.id.textViewSpeed);
-        editTextName = (EditText)findViewById(R.id.editTextName);
+        textViewRace = findViewById(R.id.textViewRace);
+        textViewSub = findViewById(R.id.textViewSub);
+        textViewSpeed = findViewById(R.id.textViewSpeed);
+        editTextName = findViewById(R.id.editTextName);
 
-        spinnerRace = (Spinner)findViewById(R.id.spinnerRace);
-        spinnerSub = (Spinner)findViewById(R.id.spinnerSub);
+        spinnerRace = findViewById(R.id.spinnerRace);
+        spinnerSub = findViewById(R.id.spinnerSub);
 
 
 
@@ -82,7 +82,7 @@ public class Race extends AppCompatActivity {
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) { */
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
+    }*/
 }
