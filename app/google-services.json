@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "308451030737",
+    "firebase_url": "https://dnd-genrea.firebaseio.com",
+    "project_id": "dnd-genrea",
+    "storage_bucket": "dnd-genrea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308451030737:android:8c8bc62fce9a9d81",
+        "android_client_info": {
+          "package_name": "com.example.dndgenerator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308451030737-7a0o4j65rbsthvfjcpb69b4ulsv15j8e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dndgenerator",
+            "certificate_hash": "97f52ab2dfd1c7d6577fbd61dabcdcb6279945d7"
+          }
+        },
+        {
+          "client_id": "308451030737-11it7kr2eh9nm4ci9csttclqclajc5e8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBebrjeS5MY8J7fUQtXCoDhAHCW3GblREY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308451030737-11it7kr2eh9nm4ci9csttclqclajc5e8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

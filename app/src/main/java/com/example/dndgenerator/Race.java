@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
  * Created by soren on 21-03-2018.
  */
 
-public class Race extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Race extends AppCompatActivity {
 
     TextView textViewRace, textViewSub, textViewSpeed;
     EditText editTextName, editTextSpeed;
@@ -43,7 +43,9 @@ public class Race extends AppCompatActivity implements AdapterView.OnItemSelecte
         spinnerRace = (Spinner)findViewById(R.id.spinnerRace);
         spinnerSub = (Spinner)findViewById(R.id.spinnerSub);
 
-        spinnerRace.setOnItemSelectedListener(this);
+
+
+      /*  spinnerRace.setOnItemSelectedListener(this); implements AdapterView.OnItemSelectedListener
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -51,7 +53,7 @@ public class Race extends AppCompatActivity implements AdapterView.OnItemSelecte
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinnerRace.setAdapter(adapter);
+        spinnerRace.setAdapter(adapter); */
     }
 
     @Override
@@ -74,13 +76,13 @@ public class Race extends AppCompatActivity implements AdapterView.OnItemSelecte
         });
     }
 
-    @Override
+ /*   @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        
+
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    public void onNothingSelected(AdapterView<?> adapterView) { */
 
     }
 }
