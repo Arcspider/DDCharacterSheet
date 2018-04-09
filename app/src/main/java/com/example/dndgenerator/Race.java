@@ -15,6 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by soren on 21-03-2018.
  */
@@ -65,9 +68,21 @@ public class Race extends AppCompatActivity {
         raceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String text = dataSnapshot.getValue(String.class);
-                textViewRace.setText(text);
-            }
+           //     String text = dataSnapshot.getValue(String.class);
+             //   textViewRace.setText(text);
+                final List<String> races = new ArrayList<String>();
+
+                for (DataSnapshot racesSnapshot: dataSnapshot.getChildren()) {
+                    String raceName = racesSnapshot.child("Races").getValue(String.class);
+                    races.add(raceName);
+                }
+
+                Spinner raceSpinner = findViewById(R.id.spinnerRace);
+                ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
+                raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerRace.setAdapter(raceAdapter);
+
+        }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
