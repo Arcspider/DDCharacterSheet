@@ -2,6 +2,7 @@ package com.example.dndgenerator;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,7 +44,7 @@ public class Race extends AppCompatActivity {
         textViewSpeed = findViewById(R.id.textViewSpeed);
         editTextName = findViewById(R.id.editTextName);
 
-        spinnerRace = findViewById(R.id.spinnerRace);
+        //spinnerRace = findViewById(R.id.spinnerRace);
         spinnerSub = findViewById(R.id.spinnerSub);
 
 
@@ -63,8 +64,6 @@ public class Race extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-
-
         raceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,12 +71,13 @@ public class Race extends AppCompatActivity {
              //   textViewRace.setText(text);
                 final List<String> races = new ArrayList<String>();
 
-                for (DataSnapshot racesSnapshot: dataSnapshot.getChildren()) {
-                    String raceName = racesSnapshot.child("Races").getValue(String.class);
+                for (DataSnapshot raceSnapshot: dataSnapshot.getChildren()) {
+                    String raceName = raceSnapshot.child("Race").getValue(String.class);
                     races.add(raceName);
+                    Log.d(Race,"Race is" + raceName)
                 }
 
-                Spinner raceSpinner = findViewById(R.id.spinnerRace);
+                Spinner spinnerRace = findViewById(R.id.spinnerRace);
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerRace.setAdapter(raceAdapter);
