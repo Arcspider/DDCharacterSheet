@@ -7,12 +7,14 @@
     <string name="action_settings">Settings</string>
     <string name="race_prompt">Choose a Race</string>
     <string-array name="main_race">
-        <item>Dragonborn</item>
+        <item>First</item>
         <item>Second</item>
         <item>Third</item>
         <item>Fourth</item>
         <item>Fifth</item>
         <item>Sixth</item>
         <item>Seventh</item>
+        <item>Eight</item>
+        <item>Ninth</item>
     </string-array>
 </resources>

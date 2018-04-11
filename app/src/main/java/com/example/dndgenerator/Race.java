@@ -28,9 +28,9 @@ public class Race extends AppCompatActivity {
     TextView textViewRace, textViewSub, textViewSpeed;
     EditText editTextName, editTextSpeed;
     Spinner spinnerRace, spinnerSub;
+    String race;
 
     DatabaseReference dndRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference raceRef = dndRootRef.child("Race");
 
 
     @Override
@@ -44,60 +44,55 @@ public class Race extends AppCompatActivity {
         textViewSpeed = findViewById(R.id.textViewSpeed);
         editTextName = findViewById(R.id.editTextName);
 
-        //spinnerRace = findViewById(R.id.spinnerRace);
+        spinnerRace = findViewById(R.id.spinnerRace);
         spinnerSub = findViewById(R.id.spinnerSub);
 
 
-
-      /*  spinnerRace.setOnItemSelectedListener(this); implements AdapterView.OnItemSelectedListener
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.main_race, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinnerRace.setAdapter(adapter); */
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-        raceRef.addValueEventListener(new ValueEventListener() {
+        dndRootRef.child("Races").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-           //     String text = dataSnapshot.getValue(String.class);
-             //   textViewRace.setText(text);
                 final List<String> races = new ArrayList<String>();
-
-                for (DataSnapshot raceSnapshot: dataSnapshot.getChildren()) {
-                    String raceName = raceSnapshot.child("Race").getValue(String.class);
-                    races.add(raceName);
-                    Log.d(Race,"Race is" + raceName)
+                for (DataSnapshot racesSnapshot: dataSnapshot.getChildren()) {
+                    String raceName = racesSnapshot.child("raceName").getValue(String.class);
+                    if (raceName != null) races.add(raceName);
+                    Log.d("Race", "The race is " + raceName);
                 }
-
-                Spinner spinnerRace = findViewById(R.id.spinnerRace);
+                Spinner raceSpinner = findViewById(R.id.spinnerRace);
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerRace.setAdapter(raceAdapter);
+                spinnerRace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        race = races.get(i);
+                        Log.d("Race", "You have selected " + race);
+                    }
+                });
 
-        }
+
+
+
+              /*  Spinner subSpinner = (Spinner) findViewById(R.id.spinnerSub);
+                //TODO: Husk subrace array
+                ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, );
+                subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerSub.setAdapter(subAdapter);*/
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-    }
 
- /*   @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
 
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }*/
 }
