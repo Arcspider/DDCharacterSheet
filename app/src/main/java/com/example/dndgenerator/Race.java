@@ -25,12 +25,15 @@ import java.util.List;
 
 public class Race extends AppCompatActivity {
 
-    TextView textViewRace, textViewSub, textViewSpeed;
-    EditText editTextName, editTextSpeed;
-    Spinner spinnerRace, spinnerSub;
+    TextView    textViewRace,   textViewSub,    textViewSpeed;
+    EditText    editTextName,   editTextSpeed;
+    Spinner     spinnerRace,    spinnerSub;
     String race;
 
-    DatabaseReference dndRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference dndRaceDwarf  = dndRaceRef.child("Dwarf");
+    DatabaseReference dndRaceElf    = dndRaceRef.child("Elf");
+    DatabaseReference dndRaceGnome  = dndRaceRef.child("Gnome");
 
 
     @Override
@@ -54,27 +57,24 @@ public class Race extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        dndRootRef.child("Races").addValueEventListener(new ValueEventListener() {
+        dndRaceRef.child("Races").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final List<String> races = new ArrayList<String>();
-                for (DataSnapshot racesSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
                     String raceName = racesSnapshot.child("raceName").getValue(String.class);
                     if (raceName != null) races.add(raceName);
-                    Log.d("Race", "The race is " + raceName);
+                    Log.d("Races", "The race is " + raceName);
+
+                    for (dataSnapshot subSnapshot : DataSnapshot.getChildren()){
+
+                    }
+
                 }
                 Spinner raceSpinner = findViewById(R.id.spinnerRace);
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerRace.setAdapter(raceAdapter);
-                spinnerRace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        race = races.get(i);
-                        Log.d("Race", "You have selected " + race);
-                    }
-                });
-
+                raceSpinner.setAdapter(raceAdapter);
 
 
 
@@ -90,9 +90,54 @@ public class Race extends AppCompatActivity {
 
             }
         });
+        dndRaceDwarf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> subDwarf = new ArrayList<>();
+                for (DataSnapshot dwarfSnapshot : dataSnapshot.getChildren()){
+                    String dwarfSub = dwarfSnapshot.child("SubName").getValue(String.class);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
 
+        dndRaceElf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> subElf = new ArrayList<>();
+                for (DataSnapshot elfSnapshot : dataSnapshot.getChildren()){
+                    String elfSub = elfSnapshot.child("SubName").getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        dndRaceGnome.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> subgnome = new ArrayList<>();
+                for (DataSnapshot gnomeSnapshot : dataSnapshot.getChildren()){
+                    String gnomeSub = gnomeSnapshot.child("SubName").getValue(String.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
-
 }
+
+
+//    }
+
+//}
