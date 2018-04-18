@@ -25,12 +25,12 @@ import java.util.List;
 
 public class Race extends AppCompatActivity {
 
-    TextView    textViewRace,   textViewSub,    textViewSpeed;
+    TextView    textViewRace,   textViewSub,    textViewSpeed, txtSpeed, txtAbilityScore;
     EditText    editTextName,   editTextSpeed;
     Spinner     spinnerRace,    spinnerSub;
     String race;
 
-    DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
     DatabaseReference dndRaceDwarf  = dndRaceRef.child("Dwarf");
     DatabaseReference dndRaceElf    = dndRaceRef.child("Elf");
     DatabaseReference dndRaceGnome  = dndRaceRef.child("Gnome");
@@ -42,13 +42,15 @@ public class Race extends AppCompatActivity {
         setContentView(R.layout.content_main);
 
         //Get UI elements
-        textViewRace = findViewById(R.id.textViewRace);
-        textViewSub = findViewById(R.id.textViewSub);
-        textViewSpeed = findViewById(R.id.textViewSpeed);
-        editTextName = findViewById(R.id.editTextName);
+        textViewRace    = findViewById(R.id.textViewRace);
+        textViewSub     = findViewById(R.id.textViewSub);
+        textViewSpeed   = findViewById(R.id.textViewSpeed);
+        txtSpeed        = findViewById(R.id.txtSpeed);
+        txtAbilityScore = findViewById(R.id.txtAbilityScore);
+        editTextName    = findViewById(R.id.editTextName);
 
-        spinnerRace = findViewById(R.id.spinnerRace);
-        spinnerSub = findViewById(R.id.spinnerSub);
+        spinnerRace     = findViewById(R.id.spinnerRace);
+        spinnerSub      = findViewById(R.id.spinnerSub);
 
 
     }
@@ -57,7 +59,7 @@ public class Race extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        dndRaceRef.child("Races").addValueEventListener(new ValueEventListener() {
+        dndRaceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final List<String> races = new ArrayList<String>();
@@ -66,15 +68,29 @@ public class Race extends AppCompatActivity {
                     if (raceName != null) races.add(raceName);
                     Log.d("Races", "The race is " + raceName);
 
-                    for (dataSnapshot subSnapshot : DataSnapshot.getChildren()){
-
-                    }
 
                 }
                 Spinner raceSpinner = findViewById(R.id.spinnerRace);
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 raceSpinner.setAdapter(raceAdapter);
+
+                raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (adapterView == spinnerRace) {
+                            race = races.get(i);
+                            expandRace(race);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+
+
+                });
 
 
 
@@ -90,22 +106,8 @@ public class Race extends AppCompatActivity {
 
             }
         });
-        dndRaceDwarf.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> subDwarf = new ArrayList<>();
-                for (DataSnapshot dwarfSnapshot : dataSnapshot.getChildren()){
-                    String dwarfSub = dwarfSnapshot.child("SubName").getValue(String.class);
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        dndRaceElf.addValueEventListener(new ValueEventListener() {
+        /*dndRaceElf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final List<String> subElf = new ArrayList<>();
@@ -127,6 +129,45 @@ public class Race extends AppCompatActivity {
                 for (DataSnapshot gnomeSnapshot : dataSnapshot.getChildren()){
                     String gnomeSub = gnomeSnapshot.child("SubName").getValue(String.class);
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+    }
+    void expandRace(String raceName){
+        dndRaceDwarf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> subDwarf = new ArrayList<>();
+                for (DataSnapshot dwarfSnapshot : dataSnapshot.getChildren()){
+                    String dwarfSub = dwarfSnapshot.child("SubName").getValue(String.class);
+                    if (dwarfSub != null) subDwarf.add(dwarfSub);
+                    Log.d("Sub","The subrace is: " + dwarfSub);
+
+                    if (dwarfSub != null && dwarfSub.equals("Mountain Dwarf")){
+                        dndRaceDwarf.child("Mountain Dwarf").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                txtSpeed.setText("Speed");
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                }
+                Spinner subSpinner = findViewById(R.id.spinnerSub);
+                ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, subDwarf);
+                subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                subSpinner.setAdapter(subAdapter);
+
             }
 
             @Override
