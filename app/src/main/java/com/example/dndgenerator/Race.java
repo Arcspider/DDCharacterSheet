@@ -30,6 +30,7 @@ public class Race extends AppCompatActivity {
     Spinner     spinnerRace,    spinnerSub;
     String race;
 
+    //Definere database
     DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
     DatabaseReference dndRaceDwarf  = dndRaceRef.child("Dwarf");
     DatabaseReference dndRaceElf    = dndRaceRef.child("Elf");
@@ -62,14 +63,15 @@ public class Race extends AppCompatActivity {
         dndRaceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> races = new ArrayList<String>();
+                final List<String> races = new ArrayList<String>(); //Opretter et array til "races"
                 for (DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
-                    String raceName = racesSnapshot.child("raceName").getValue(String.class);
-                    if (raceName != null) races.add(raceName);
+                    String raceName = racesSnapshot.child("raceName").getValue(String.class); //Finder "raceName" fra childs i databasen
+                    if (raceName != null) races.add(raceName);  //Tilføjer "raceName" til arraylisten hvis de ikker er "null"
                     Log.d("Races", "The race is " + raceName);
 
 
                 }
+                // Opretter en spinner-liste
                 Spinner raceSpinner = findViewById(R.id.spinnerRace);
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -148,11 +150,16 @@ public class Race extends AppCompatActivity {
                     Log.d("Sub","The subrace is: " + dwarfSub);
 
                     if (dwarfSub != null && dwarfSub.equals("Mountain Dwarf")){
+                        Log.d("Sub", "The selected subrace is " + dwarfSub);
                         dndRaceDwarf.child("Mountain Dwarf").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot speedSnapshot : dataSnapshot.getChildren()){
+                                    String subSpeed = speedSnapshot.child("Speed").getValue(String.class);
+                                    txtSpeed.setText("25");
+                                }
 
-                                txtSpeed.setText("Speed");
+
                             }
 
                             @Override
