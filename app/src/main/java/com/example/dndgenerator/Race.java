@@ -153,7 +153,7 @@ public class Race extends AppCompatActivity {
                                         Log.d("asbonus", "onItemSelected: " + asCon);
                                         txtSpeed.setText(subSpeed.toString());
                                     }
-                                    txtAbilityScore.setText("Constituition " + asCon.toString());
+                                 /*   txtAbilityScore.setText("Constituition " + asCon.toString());
                                 } else if (subName.equals("Dark Elf (Drow)")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
@@ -162,7 +162,7 @@ public class Race extends AppCompatActivity {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
                                     }
-                                } else if (subName.equals("Wood Elf")) {
+                                /*} else if (subName.equals("Wood Elf")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
                                     }
@@ -185,7 +185,7 @@ public class Race extends AppCompatActivity {
                                 } else if (subName.equals("Mountain Dwarf")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
-                                    }
+                                    }*/
                                 }
                             }
                         }
