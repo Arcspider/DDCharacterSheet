@@ -30,11 +30,9 @@ public class Race extends AppCompatActivity {
     Spinner     spinnerRace,    spinnerSub;
     String race;
 
+
     //Definere database
     DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
-    DatabaseReference dndRaceDwarf  = dndRaceRef.child("Dwarf");
-    DatabaseReference dndRaceElf    = dndRaceRef.child("Elf");
-    DatabaseReference dndRaceGnome  = dndRaceRef.child("Gnome");
 
 
     @Override
@@ -48,7 +46,6 @@ public class Race extends AppCompatActivity {
         textViewSpeed   = findViewById(R.id.textViewSpeed);
         txtSpeed        = findViewById(R.id.txtSpeed);
         txtAbilityScore = findViewById(R.id.txtAbilityScore);
-        editTextName    = findViewById(R.id.editTextName);
 
         spinnerRace     = findViewById(R.id.spinnerRace);
         spinnerSub      = findViewById(R.id.spinnerSub);
@@ -66,7 +63,7 @@ public class Race extends AppCompatActivity {
                 final List<String> races = new ArrayList<String>(); //Opretter et array til "races"
                 for (DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
                     String raceName = racesSnapshot.child("raceName").getValue(String.class); //Finder "raceName" fra childs i databasen
-                    if (raceName != null) races.add(raceName);  //Tilføjer "raceName" til arraylisten hvis de ikker er "null"
+                    races.add(raceName);  //Tilføjer "raceName" til arraylisten
                     Log.d("Races", "The race is " + raceName);
 
 
@@ -76,7 +73,6 @@ public class Race extends AppCompatActivity {
                 ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, races);
                 raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 raceSpinner.setAdapter(raceAdapter);
-
                 raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -93,14 +89,6 @@ public class Race extends AppCompatActivity {
 
 
                 });
-
-
-
-              /*  Spinner subSpinner = (Spinner) findViewById(R.id.spinnerSub);
-                //TODO: Husk subrace array
-                ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, );
-                subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerSub.setAdapter(subAdapter);*/
             }
 
             @Override
@@ -139,41 +127,54 @@ public class Race extends AppCompatActivity {
             }
         });*/
     }
-    void expandRace(String raceName){
-        dndRaceDwarf.addValueEventListener(new ValueEventListener() {
+    void expandRace(final String raceName){
+        final Spinner subSpinner = findViewById(R.id.spinnerSub);
+
+        dndRaceRef.child(raceName).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<String> subDwarf = new ArrayList<>();
-                for (DataSnapshot dwarfSnapshot : dataSnapshot.getChildren()){
-                    String dwarfSub = dwarfSnapshot.child("SubName").getValue(String.class);
-                    if (dwarfSub != null) subDwarf.add(dwarfSub);
-                    Log.d("Sub","The subrace is: " + dwarfSub);
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                final List<String> subList = new ArrayList<>();
+                for (final DataSnapshot subSnapshot : dataSnapshot.getChildren()){
+                    final String subName = subSnapshot.child("SubName").getValue(String.class);
 
-                    if (dwarfSub != null && dwarfSub.equals("Mountain Dwarf")){
-                        Log.d("Sub", "The selected subrace is " + dwarfSub);
-                        dndRaceDwarf.child("Mountain Dwarf").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot speedSnapshot : dataSnapshot.getChildren()){
-                                    String subSpeed = speedSnapshot.child("Speed").getValue(String.class);
-                                    txtSpeed.setText("25");
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
+                    if (subName != null) subList.add(subName);
+                    Log.d("Sub","The subrace is: " + subName);
                 }
-                Spinner subSpinner = findViewById(R.id.spinnerSub);
-                ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, subDwarf);
-                subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                subSpinner.setAdapter(subAdapter);
+
+                if (subList.isEmpty()){
+                    spinnerSub.setVisibility(View.GONE);
+                }
+
+                else {
+                    spinnerSub.setVisibility(View.VISIBLE);
+                    ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, subList);
+                    subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    subSpinner.setAdapter(subAdapter);
+                    subSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+                            String subName = spinnerSub.getSelectedItem().toString();
+                            for (final DataSnapshot speedSnapshot : dataSnapshot.getChildren()){
+                            final Integer subSpeed =
+                                    speedSnapshot.child("Speed").getValue(Integer.class);
+                              if(subName.equals("Hill Dwarf")){
+                                if (subSpeed != null){
+                                    txtSpeed.setText(subSpeed.toString());}
+                            } else if(subName.equals("Mountain Dwarf")){
+                                if (subSpeed != null){
+                                    txtSpeed.setText(subSpeed.toString());}
+                            }}
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+
+
+
 
             }
 
@@ -185,7 +186,3 @@ public class Race extends AppCompatActivity {
     }
 }
 
-
-//    }
-
-//}
