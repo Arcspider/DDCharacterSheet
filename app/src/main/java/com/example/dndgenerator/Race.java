@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,12 +30,14 @@ public class Race extends AppCompatActivity {
     TextView    textViewSub,    txtSpeed, txtAbilityScore, txtRacial;
     EditText    editTextName;
     Spinner     spinnerRace,    spinnerSub;
+    ListView    RTList;
     String      race;
 
 
 
     //Definere database
     DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
+    DatabaseReference MHRef         = FirebaseDatabase.getInstance().getReferenceFromUrl("https://dnd-genrea.firebaseio.com/Races/Dwarf/Hill Dwarf/Traits");
 
 
     @Override
@@ -47,6 +50,7 @@ public class Race extends AppCompatActivity {
         txtSpeed        = findViewById(R.id.txtSpeed);
         txtAbilityScore = findViewById(R.id.txtAbilityScore);
         txtRacial       = findViewById(R.id.txtRacial);
+        RTList          = findViewById(R.id.RTList);
 
         spinnerRace     = findViewById(R.id.spinnerRace);
         spinnerSub      = findViewById(R.id.spinnerSub);
@@ -68,23 +72,24 @@ public class Race extends AppCompatActivity {
                     Log.d("Races", "The race is " + raceName);
 
                     // Opretter en spinner-liste
-                    Spinner raceSpinner = findViewById(R.id.spinnerRace);
+                    final Spinner raceSpinner = findViewById(R.id.spinnerRace);
                     ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, raceList);
                     raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     raceSpinner.setAdapter(raceAdapter);
-                    spinnerRace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            String nameRace = raceSpinner.getSelectedItem().toString();
                             if (adapterView == spinnerRace) {
                                 race = raceList.get(i);
                                 expandRace(race);
                                 }
                                 final Integer raceSpeed = racesSnapshot.child("Speed").getValue(Integer.class);
                                 Log.d("Speed", "onItemSelected: " + raceSpeed);
-                                if(raceName.equals("Dragonborn")){
+                                if(nameRace.equals("Dragonborn")){
                                     if (raceSpeed != null){
                                         txtSpeed.setText(raceSpeed.toString());}
-                                } else if(raceName.equals("Half-Elf)")) {
+                                } else if(nameRace.equals("Half-Elf)")) {
                                     if (raceSpeed != null) {
                                         txtSpeed.setText(raceSpeed.toString());
                                     }
@@ -112,7 +117,7 @@ public class Race extends AppCompatActivity {
         final Spinner subSpinner = findViewById(R.id.spinnerSub);
 
         //Opretter en spinnerliste for subraces
-        dndRaceRef.child(raceName).addValueEventListener(new ValueEventListener() {
+        dndRaceRef.child(raceName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 final List<String> subList = new ArrayList<>();
@@ -139,6 +144,7 @@ public class Race extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
                             String subName = spinnerSub.getSelectedItem().toString();
+
                             for (final DataSnapshot subSnapshot : dataSnapshot.getChildren()) {
                                 final Integer subSpeed = subSnapshot.child("Speed").getValue(Integer.class);
                                 final Integer asStr = subSnapshot.child("Strength").getValue(Integer.class);
@@ -147,11 +153,17 @@ public class Race extends AppCompatActivity {
                                 final Integer asCon = subSnapshot.child("Constitution").getValue(Integer.class);
                                 final Integer asWis = subSnapshot.child("Wisdom").getValue(Integer.class);
                                 final Integer asChar = subSnapshot.child("Charisma").getValue(Integer.class);
+                                final String DTTrait = subSnapshot.child("Traits").child("Dwarven Toughness").getValue(String.class);
+
 
                                 if (subName.equals("Hill Dwarf")) {
-                                    if ((subSpeed != null) && (asCon != null)) {
+                                    if ((subSpeed != null) && (asCon != null) && (DTTrait != null)) {
+                                        Log.d("trait", "onItemSelected: " + DTTrait);
                                         Log.d("asbonus", "onItemSelected: " + asCon);
                                         txtSpeed.setText(subSpeed.toString());
+                                        txtAbilityScore.setText("Constitution: " + asCon.toString());
+                                        txtRacial.setText(DTTrait);
+
                                     }
                                  /*   txtAbilityScore.setText("Constituition " + asCon.toString());
                                 } else if (subName.equals("Dark Elf (Drow)")) {
