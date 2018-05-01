@@ -13,12 +13,13 @@
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:spinnerMode="dropdown"
-
+        android:layout_marginTop="8dp"
         android:prompt="@string/race_prompt"
+
+        android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRace" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRace"
+        android:layout_marginLeft="8dp" />
 
     <EditText
         android:id="@+id/editTextName"
@@ -42,103 +43,139 @@
         android:layout_marginTop="70dp"
         android:text="Select Race"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/textViewSub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:text="Select Subrace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerRace" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRace"
+        android:layout_marginLeft="16dp" />
 
     <Spinner
         android:id="@+id/spinnerSub"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSub" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
-        android:text="Bonus Ability Score"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpeed" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="56dp"
-        android:layout_marginRight="56dp"
-        android:layout_marginTop="92dp"
-        android:text="Racial Traits"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpeed" />
-
-    <TextView
-        android:id="@+id/textViewSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
-        android:text="Speed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSub" />
-
-    <TextView
-        android:id="@+id/txtAbilityScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginStart="52dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSub"
+        android:layout_marginLeft="8dp" />
 
-    <TextView
-        android:id="@+id/txtRacial"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
+    <TableLayout
+        android:id="@+id/tableLayout2"
+        android:layout_width="368dp"
+        android:layout_height="104dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.72"
-        app:layout_constraintStart_toEndOf="@+id/txtAbilityScore"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.509" />
-
-    <TextView
-        android:id="@+id/txtSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="TextView"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSpeed" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSub"
+        app:layout_constraintVertical_bias="0.057">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewSpeed"
+                android:layout_width="156dp"
+                android:layout_height="wrap_content"
+                android:text="Speed"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="52dp" />
+
+            <TextView
+                android:id="@+id/textBonusAS"
+                android:layout_width="212dp"
+                android:layout_height="17dp"
+                android:text="Bonus Ability Score"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="90dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="29dp"
+                android:text="Speed"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TextView
+                android:id="@+id/txtAbilityScore"
+                android:layout_width="123dp"
+                android:layout_height="wrap_content"
+                android:text="Ability Score"
+                tools:layout_editor_absoluteX="162dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textRacialTrait"
+                android:layout_width="105dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Racial Traits"
+                tools:layout_editor_absoluteX="263dp"
+                tools:layout_editor_absoluteY="80dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtRacial"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_weight="1"
+                android:text="Racial Trait"
+                tools:layout_editor_absoluteX="75dp"
+                tools:layout_editor_absoluteY="8dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/SpeedList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ListView
+                android:id="@+id/ASList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ListView
+                android:id="@+id/RTList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableRow>
+
+    </TableLayout>
 
 
 </android.support.constraint.ConstraintLayout>

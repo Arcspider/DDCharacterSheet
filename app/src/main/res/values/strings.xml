@@ -17,4 +17,6 @@
         <item>Eight</item>
         <item>Ninth</item>
     </string-array>
+    <string name="title_activity_character_creation">CharacterCreation</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
