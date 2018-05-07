@@ -56,6 +56,8 @@ public class Race extends AppCompatActivity {
         spinnerSub      = findViewById(R.id.spinnerSub);
 
 
+
+
     }
 
     @Override
@@ -139,6 +141,7 @@ public class Race extends AppCompatActivity {
                     ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, subList);
                     subAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     subSpinner.setAdapter(subAdapter);
+
                     // Vælger "Speed", "Ability Score" og "Racial Traits" for alle individuelle subraces
                     subSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -153,17 +156,31 @@ public class Race extends AppCompatActivity {
                                 final Integer asCon = subSnapshot.child("Constitution").getValue(Integer.class);
                                 final Integer asWis = subSnapshot.child("Wisdom").getValue(Integer.class);
                                 final Integer asChar = subSnapshot.child("Charisma").getValue(Integer.class);
-                                final String DTTrait = subSnapshot.child("Traits").child("Dwarven Toughness").getValue(String.class);
+                                //final String DTTrait = subSnapshot.child("Traits").child("Dwarven Toughness").getValue(String.class);
+                               /* final List<String> subRT = new ArrayList<>();
+                                final String subTrait = subSnapshot.child("Traits").child("traitName").getValue(String.class);
+                                if (subTrait != null) subRT.add(subTrait);
+                                Log.d("traits", "onItemSelected: "+subTrait);
+                                ArrayAdapter<String> subRTList = new ArrayAdapter<String>(Race.this, android.R.layout.simple_list_item_1, subRT);
+                                RTList.setAdapter(subRTList);*/
+
+                                final List<String> subRT = new ArrayList<>();
+                                final String subTrait = subSnapshot.child("Traits").child("traitName").getValue(String.class);
+                                if (subTrait != null) subRT.add(subTrait);
+                                Log.d("traits", "onItemSelected: "+subTrait);
+                                Log.d("traits", "onItemSelected: " + subSnapshot.child("Traits"));
+
 
 
                                 if (subName.equals("Hill Dwarf")) {
-                                    if ((subSpeed != null) && (asCon != null) && (DTTrait != null)) {
-                                        Log.d("trait", "onItemSelected: " + DTTrait);
+                                    if ((subSpeed != null) && (subSpeed == 45) && (asCon != null) && (asWis != null)){
+                                        Log.d("trait", "onItemSelected: " );
                                         Log.d("asbonus", "onItemSelected: " + asCon);
                                         txtSpeed.setText(subSpeed.toString());
-                                        txtAbilityScore.setText("Constitution: " + asCon.toString());
-                                        txtRacial.setText(DTTrait);
-
+                                        txtAbilityScore.setText("Constitution: " + asCon.toString() + "Wisdom: " + asWis);
+                                        //txtRacial.setText(DTTrait);
+                                        ArrayAdapter<String> subRTList = new ArrayAdapter<String>(Race.this, android.R.layout.simple_list_item_1, subRT);
+                                        RTList.setAdapter(subRTList);
                                     }
                                  /*   txtAbilityScore.setText("Constituition " + asCon.toString());
                                 } else if (subName.equals("Dark Elf (Drow)")) {
@@ -193,11 +210,11 @@ public class Race extends AppCompatActivity {
                                 } else if (subName.equals("Stout")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
-                                    }
+                                    }*/
                                 } else if (subName.equals("Mountain Dwarf")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
-                                    }*/
+                                    }
                                 }
                             }
                         }
