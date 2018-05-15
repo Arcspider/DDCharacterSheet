@@ -1,5 +1,7 @@
 package com.example.dndgenerator;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,16 +13,30 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-public class CharacterCreator extends AppCompatActivity {
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class CharacterCreator extends AppCompatActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -29,12 +45,14 @@ public class CharacterCreator extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private  static  final String TAG = "CharacterCreator";
+        private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +82,6 @@ public class CharacterCreator extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
     }
 
 
@@ -88,6 +105,91 @@ public class CharacterCreator extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Initialisering af Race fragment
+    public static class RaceFragment extends Fragment{
+        TextView    textViewSub,    txtSpeed, txtAbilityScore, txtRacial;
+        EditText    editTextName;
+        Spinner     spinnerRace,    spinnerSub;
+        ListView    RTList;
+        String      race;
+
+        //Definere database
+        DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
+        DatabaseReference MHRef         = FirebaseDatabase.getInstance().getReferenceFromUrl("https://dnd-genrea.firebaseio.com/Races/Dwarf/Hill Dwarf/Traits");
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_race,container,false);
+            //Get UI elements
+            textViewSub     = view.findViewById(R.id.textViewSub);
+            txtSpeed        = view.findViewById(R.id.txtSpeed);
+            txtAbilityScore = view.findViewById(R.id.txtAbilityScore);
+            txtRacial       = view.findViewById(R.id.txtRacial);
+            RTList          = view.findViewById(R.id.RTList);
+
+            spinnerRace     = view.findViewById(R.id.spinnerRace);
+            spinnerSub      = view.findViewById(R.id.spinnerSub);
+
+            return view;
+        }
+
+        @Override
+        public void onStart(){
+            super.onStart();
+            dndRaceRef.addValueEventListener(new ValueEventListener() {
+                                                 @Override
+                                                 public void onDataChange(final DataSnapshot dataSnapshot) {
+                                                     final List<String> raceList = new ArrayList<String>(); //Opretter et array til "races"
+                                                     for (final DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
+                                                         final String raceName = racesSnapshot.child("raceName").getValue(String.class); //Finder "raceName" fra childs i databasen
+                                                         raceList.add(raceName);  //Tilføjer "raceName" til arraylisten
+                                                         Log.d("Races", "The race is " + raceName);
+
+                                                         // Opretter en spinner-liste
+                                                         final Spinner raceSpinner = view.findViewById(R.id.spinnerRace);
+                                                         ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, raceList);
+                                                         raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                         raceSpinner.setAdapter(raceAdapter);
+                                                         raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                             @Override
+                                                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                                                 String nameRace = raceSpinner.getSelectedItem().toString();
+                                                                 if (adapterView == spinnerRace) {
+                                                                     race = raceList.get(i);
+                                                                     //expandRace(race);
+                                                                 }
+                                                                 final Integer raceSpeed = racesSnapshot.child("Speed").getValue(Integer.class);
+                                                                 Log.d("Speed", "onItemSelected: " + raceSpeed);
+                                                                 if(nameRace.equals("Dragonborn")){
+                                                                     if (raceSpeed != null){
+                                                                         txtSpeed.setText(raceSpeed.toString());}
+                                                                 } else if(nameRace.equals("Half-Elf)")) {
+                                                                     if (raceSpeed != null) {
+                                                                         txtSpeed.setText(raceSpeed.toString());
+                                                                     }
+                                                                 }
+                                                             }
+
+
+                                                             @Override
+                                                             public void onNothingSelected(AdapterView<?> adapterView) {
+                                                             }
+                                                         });
+
+
+                                                     }
+
+                                                 }
+
+                                                 @Override
+                                                 public void onCancelled(DatabaseError databaseError) {
+
+                                                 }
+                                             }
+            );
     }
 
     /**
@@ -118,6 +220,16 @@ public class CharacterCreator extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1){
+                return inflater.inflate(R.layout.fragment_race, container, false);
+            }
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 2){
+                return inflater.inflate(R.layout.fragment_class, container, false);
+            }
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 3){
+                return inflater.inflate(R.layout.fragment_summary, container, false);
+            }
+
             View rootView = inflater.inflate(R.layout.fragment_character_creator, container, false);
             TextView textView = rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -140,6 +252,12 @@ public class CharacterCreator extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
+           /* switch (position){
+                case 0: return RaceFragment.newInstance();
+                case 1: return ClassFragment.newInstance();
+                case 2: return SummaryFragment.newInstance();
+                default: return RaceFragment.newInstance();
+            }*/
         }
 
         @Override

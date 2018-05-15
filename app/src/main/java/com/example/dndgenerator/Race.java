@@ -33,8 +33,6 @@ public class Race extends AppCompatActivity {
     ListView    RTList;
     String      race;
 
-
-
     //Definere database
     DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
     DatabaseReference MHRef         = FirebaseDatabase.getInstance().getReferenceFromUrl("https://dnd-genrea.firebaseio.com/Races/Dwarf/Hill Dwarf/Traits");
@@ -55,15 +53,11 @@ public class Race extends AppCompatActivity {
         spinnerRace     = findViewById(R.id.spinnerRace);
         spinnerSub      = findViewById(R.id.spinnerSub);
 
-
-
-
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-
         dndRaceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -113,7 +107,8 @@ public class Race extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        }
+        );
     }
     void expandRace(final String raceName){
         final Spinner subSpinner = findViewById(R.id.spinnerSub);
