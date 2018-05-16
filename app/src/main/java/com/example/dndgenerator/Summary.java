@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class Summary extends AppCompatActivity {
 
-    TextView txtName, txtRace, txtClass;
+    TextView txtName, txtRace, txtClass, txtSpeed, txtAS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,8 @@ public class Summary extends AppCompatActivity {
         txtName = findViewById(R.id.txtName);
         txtRace = findViewById(R.id.txtRace);
         txtClass = findViewById(R.id.txtClass);
+        txtSpeed = findViewById(R.id.txtSpeed);
+        txtAS = findViewById(R.id.txtAS);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -42,8 +44,10 @@ public class Summary extends AppCompatActivity {
         String Constitution = intent.getStringExtra("Constitution");
         String Wisdom = intent.getStringExtra("Wisdom");
         String Charisma = intent.getStringExtra("Charisma");
+        Integer Speed = intent.getIntExtra("Speed",0);
         txtName.setText(Name);
         txtRace.setText(Race);
+        txtSpeed.setText(String.valueOf(Speed));
     }
 
 }

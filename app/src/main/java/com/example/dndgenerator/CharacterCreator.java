@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class CharacterCreator extends AppCompatActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,16 +44,16 @@ public class CharacterCreator extends AppCompatActivity {
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+     *//*
     private  static  final String TAG = "CharacterCreator";
         private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
-     */
+     *//*
     private ViewPager mViewPager;
 
-
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,12 +194,12 @@ public class CharacterCreator extends AppCompatActivity {
 
     /**
      * A placeholder fragment containing a simple view.
-     */
+     *//*
     public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
-         */
+         *//*
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
@@ -208,7 +208,7 @@ public class CharacterCreator extends AppCompatActivity {
         /**
          * Returns a new instance of this fragment for the given section
          * number.
-         */
+         *//*
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -240,7 +240,7 @@ public class CharacterCreator extends AppCompatActivity {
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
-     */
+     *//*
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -257,7 +257,7 @@ public class CharacterCreator extends AppCompatActivity {
                 case 1: return ClassFragment.newInstance();
                 case 2: return SummaryFragment.newInstance();
                 default: return RaceFragment.newInstance();
-            }*/
+            }*//*
         }
 
         @Override
@@ -267,3 +267,4 @@ public class CharacterCreator extends AppCompatActivity {
         }
     }
 }
+*/
