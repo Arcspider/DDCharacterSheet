@@ -22,7 +22,7 @@
         <activity
             android:name=".CharacterCreator"
             android:label="@string/title_activity_character_creator"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Summary"
             android:label="@string/title_activity_summary"

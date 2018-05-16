@@ -140,55 +140,55 @@ public class CharacterCreator extends AppCompatActivity {
         public void onStart(){
             super.onStart();
             dndRaceRef.addValueEventListener(new ValueEventListener() {
-                                                 @Override
-                                                 public void onDataChange(final DataSnapshot dataSnapshot) {
-                                                     final List<String> raceList = new ArrayList<String>(); //Opretter et array til "races"
-                                                     for (final DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
-                                                         final String raceName = racesSnapshot.child("raceName").getValue(String.class); //Finder "raceName" fra childs i databasen
-                                                         raceList.add(raceName);  //Tilføjer "raceName" til arraylisten
-                                                         Log.d("Races", "The race is " + raceName);
+                 @Override
+                 public void onDataChange(final DataSnapshot dataSnapshot) {
+                     final List<String> raceList = new ArrayList<String>(); //Opretter et array til "races"
+                     for (final DataSnapshot racesSnapshot : dataSnapshot.getChildren()) {
+                         final String raceName = racesSnapshot.child("raceName").getValue(String.class); //Finder "raceName" fra childs i databasen
+                         raceList.add(raceName);  //Tilføjer "raceName" til arraylisten
+                         Log.d("Races", "The race is " + raceName);
 
-                                                         // Opretter en spinner-liste
-                                                         final Spinner raceSpinner = view.findViewById(R.id.spinnerRace);
-                                                         ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, raceList);
-                                                         raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                         raceSpinner.setAdapter(raceAdapter);
-                                                         raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                             @Override
-                                                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                                 String nameRace = raceSpinner.getSelectedItem().toString();
-                                                                 if (adapterView == spinnerRace) {
-                                                                     race = raceList.get(i);
-                                                                     //expandRace(race);
-                                                                 }
-                                                                 final Integer raceSpeed = racesSnapshot.child("Speed").getValue(Integer.class);
-                                                                 Log.d("Speed", "onItemSelected: " + raceSpeed);
-                                                                 if(nameRace.equals("Dragonborn")){
-                                                                     if (raceSpeed != null){
-                                                                         txtSpeed.setText(raceSpeed.toString());}
-                                                                 } else if(nameRace.equals("Half-Elf)")) {
-                                                                     if (raceSpeed != null) {
-                                                                         txtSpeed.setText(raceSpeed.toString());
-                                                                     }
-                                                                 }
-                                                             }
-
-
-                                                             @Override
-                                                             public void onNothingSelected(AdapterView<?> adapterView) {
-                                                             }
-                                                         });
+                         // Opretter en spinner-liste
+                         final Spinner raceSpinner = view.findViewById(R.id.spinnerRace);
+                         ArrayAdapter<String> raceAdapter = new ArrayAdapter<String>(Race.this, android.R.layout.simple_spinner_item, raceList);
+                         raceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                         raceSpinner.setAdapter(raceAdapter);
+                         raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                             @Override
+                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                 String nameRace = raceSpinner.getSelectedItem().toString();
+                                 if (adapterView == spinnerRace) {
+                                     race = raceList.get(i);
+                                     //expandRace(race);
+                                 }
+                                 final Integer raceSpeed = racesSnapshot.child("Speed").getValue(Integer.class);
+                                 Log.d("Speed", "onItemSelected: " + raceSpeed);
+                                 if(nameRace.equals("Dragonborn")){
+                                     if (raceSpeed != null){
+                                         txtSpeed.setText(raceSpeed.toString());}
+                                 } else if(nameRace.equals("Half-Elf)")) {
+                                     if (raceSpeed != null) {
+                                         txtSpeed.setText(raceSpeed.toString());
+                                     }
+                                 }
+                             }
 
 
-                                                     }
+                             @Override
+                             public void onNothingSelected(AdapterView<?> adapterView) {
+                             }
+                         });
 
-                                                 }
 
-                                                 @Override
-                                                 public void onCancelled(DatabaseError databaseError) {
+                     }
 
-                                                 }
-                                             }
+                 }
+
+                 @Override
+                 public void onCancelled(DatabaseError databaseError) {
+
+                 }
+             }
             );
     }
 

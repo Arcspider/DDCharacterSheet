@@ -1,11 +1,14 @@
 package com.example.dndgenerator;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -32,6 +35,10 @@ public class Race extends AppCompatActivity {
     Spinner     spinnerRace,    spinnerSub;
     ListView    RTList;
     String      race;
+    Integer     strength, dexterity, intelligence, constitution, wisdom, charisma, speed;
+    TextInputEditText charName;
+    Button btnSummary;
+
 
     //Definere database
     DatabaseReference dndRaceRef    = FirebaseDatabase.getInstance().getReference("Races");
@@ -49,11 +56,30 @@ public class Race extends AppCompatActivity {
         txtAbilityScore = findViewById(R.id.txtAbilityScore);
         txtRacial       = findViewById(R.id.txtRacial);
         RTList          = findViewById(R.id.RTList);
-
         spinnerRace     = findViewById(R.id.spinnerRace);
         spinnerSub      = findViewById(R.id.spinnerSub);
+        charName        = findViewById(R.id.charName);
+        btnSummary      = findViewById(R.id.btnSummary);
+
+        btnSummary.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Summary.class);
+                intent.putExtra("CharacterName",charName.getText().toString());
+                intent.putExtra("Race",race);
+                intent.putExtra("Strength",strength);
+                intent.putExtra("Dexterity",dexterity);
+                intent.putExtra("Intelligence",intelligence);
+                intent.putExtra("Consitution",constitution);
+                intent.putExtra("Charisma", charisma);
+                intent.putExtra("Speed",speed);
+                startActivity(intent);
+            }
+        });
 
     }
+
 
     @Override
     protected void onStart(){
@@ -128,6 +154,7 @@ public class Race extends AppCompatActivity {
                 if (subList.isEmpty()){
                     spinnerSub.setVisibility(View.GONE);
                     textViewSub.setVisibility(View.GONE);
+                    race = raceName;
                 }
 
                 else {
@@ -142,6 +169,7 @@ public class Race extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
                             String subName = spinnerSub.getSelectedItem().toString();
+                            race = subName;
 
                             for (final DataSnapshot subSnapshot : dataSnapshot.getChildren()) {
                                 final Integer subSpeed = subSnapshot.child("Speed").getValue(Integer.class);
@@ -159,6 +187,14 @@ public class Race extends AppCompatActivity {
                                 ArrayAdapter<String> subRTList = new ArrayAdapter<String>(Race.this, android.R.layout.simple_list_item_1, subRT);
                                 RTList.setAdapter(subRTList);*/
 
+                               strength = asStr;
+                               dexterity = asDex;
+                               intelligence = asInt;
+                               constitution = asCon;
+                               wisdom = asWis;
+                               charisma = asChar;
+                               speed = subSpeed;
+
                                 final List<String> subRT = new ArrayList<>();
                                 final String subTrait = subSnapshot.child("Traits").child("traitName").getValue(String.class);
                                 if (subTrait != null) subRT.add(subTrait);
@@ -172,7 +208,10 @@ public class Race extends AppCompatActivity {
                                         Log.d("trait", "onItemSelected: " );
                                         Log.d("asbonus", "onItemSelected: " + asCon);
                                         txtSpeed.setText(subSpeed.toString());
-                                        txtAbilityScore.setText("Constitution: " + asCon.toString() + "Wisdom: " + asWis);
+                                        //txtAbilityScore.setText("Constitution: " + asCon.toString() + "Wisdom: " + asWis);
+                                        txtAbilityScore.setText("Constitution: " + asCon);
+                                        txtAbilityScore.append(System.getProperty("line.separator"));
+                                        txtAbilityScore.append("Wisdom: " + asWis);
                                         //txtRacial.setText(DTTrait);
                                         ArrayAdapter<String> subRTList = new ArrayAdapter<String>(Race.this, android.R.layout.simple_list_item_1, subRT);
                                         RTList.setAdapter(subRTList);
@@ -209,6 +248,9 @@ public class Race extends AppCompatActivity {
                                 } else if (subName.equals("Mountain Dwarf")) {
                                     if (subSpeed != null) {
                                         txtSpeed.setText(subSpeed.toString());
+                                        txtAbilityScore.setText("Constitution: " + asCon);
+                                        txtAbilityScore.append(System.getProperty("line.separator"));
+                                        txtAbilityScore.append("Strength: " + asStr);
                                     }
                                 }
                             }
